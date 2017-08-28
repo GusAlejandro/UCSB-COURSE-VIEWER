@@ -1,0 +1,12 @@
+# environments 
+venv/
+
+#emacs 
+*~
+
+#python
+*.pyc
+
+#pycharm
+*.xml
+*.iml

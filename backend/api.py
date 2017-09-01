@@ -14,9 +14,6 @@ class Courses(Resource):
     #     add(args['name'])
     #     return "added " + args['name'] + " as a user!"
 
-    def post(self):
-        pass
-
     def get(self):
         pass
 

@@ -1,11 +1,12 @@
 # Refactor Payload section, will now contain much more information
 
 authentication = {
-    'username':'xxxx',
-    'password':'xxxx'
+    'username':'xxx',
+    'password':'xxx'
 }
 
 codes_for_quarters = {
+    'FALL2017' : '20174',
     'SUMMER2017': '20173',
     'SPRING2017': '20172',
     'WINTER2017': '20171',

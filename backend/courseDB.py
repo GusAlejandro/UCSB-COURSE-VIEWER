@@ -1,10 +1,11 @@
 from pymongo import MongoClient
 
-client = MongoClient('xxx',12345)
+
+client = MongoClient('xxx',1234)
 db = client['xxx']
 db.authenticate('xxx','xxxx')
 
-# functions for DB updates
+# interface for gold data layer to update DB
 
 def add_course_title(course_title, quarter, subject):
     '''
@@ -14,27 +15,17 @@ def add_course_title(course_title, quarter, subject):
     :param subject:
     :return:
     '''
-    titles = db.titles
+    courses = db.course_titles
 
-    select_quarter = titles.find_one({"quarter":quarter})
+    select_quarter = courses.find_one({"quarter":quarter})
 
     if not select_quarter:
-        # this means that the quarter does not exist, so we need to add it before adding the course
-        # create the quarter
-        select_quarter = titles.insert_one({"quarter":quarter}).inserted_id
-        # now update the quarter with the course
-        titles.update({'_id': select_quarter}, {"$addToSet": {subject: course_title}})
+        courses.insert_one({"quarter": quarter})
+
+        courses.update_one({"quarter": quarter},{"$addToSet": {subject: course_title}})
+
     else:
-        # this means that the quarter exists so we can just do update since it will create it if not already there
-        titles.update({'_id':select_quarter['_id']}, {"$addToSet": {subject : course_title}})
-
-
-
-
-
-
-
-
+        courses.update_one({"quarter" : quarter}, {"$addToSet": {subject: course_title}})
 
 
 def bulk_add_course_titles(titles, quarter, subject):
@@ -47,6 +38,25 @@ def bulk_add_course_titles(titles, quarter, subject):
     '''
     for course_title in titles:
         add_course_title(course_title, quarter, subject)
+
+
+def add_all_offering_info(course_title ,data, quarter, subject):
+    courses = db.courses
+    course_title = course_title.replace(".","")
+    data = { "course title" : course_title, "offerings" : data}
+
+    select_quarter = courses.find_one({"quarter": quarter})
+
+    if not select_quarter:
+        courses.insert_one({"quarter":quarter})
+
+        courses.update_one({ "quarter" : quarter}, {"$addToSet": { subject : {course_title: data}}})
+
+    else:
+
+        courses.update_one({"quarter": quarter}, {"$addToSet": {subject: {course_title: data}}})
+
+
 
 
 # interface for clients

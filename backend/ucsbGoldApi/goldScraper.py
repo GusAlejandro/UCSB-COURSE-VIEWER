@@ -1,5 +1,6 @@
 from .settings import *
 from selenium import webdriver
+from selenium import common
 from selenium.webdriver.support.ui import Select
 from bs4 import BeautifulSoup
 import collections
@@ -70,8 +71,11 @@ class Scraper:
         quarter_field.select_by_value(self.quarter)
         subject_field = Select(self.browser.find_element_by_name('ctl00$pageContent$subjectAreaDropDown'))
         subject_field.select_by_value(self.subject)
-        self.browser.find_element_by_name('ctl00$pageContent$searchButton').click()
-        raw_html = self.browser.page_source
+        try:
+            self.browser.find_element_by_name('ctl00$pageContent$searchButton').click()
+            raw_html = self.browser.page_source
+        except common.exceptions.NoSuchElementException:
+            raw_html = ""
         self.browser.quit()
         return raw_html
 
@@ -133,7 +137,7 @@ class Scraper:
                     offering_id += 1
                     offering = offering.contents[1] # closing in on actual relevant data
                     days, time, instructor = self.parse_course_offering_data(offering)
-                    offering_data[offering_id] = self.create_offering_bundle(days, time, instructor)
+                    offering_data[str(offering_id)] = self.create_offering_bundle(days, time, instructor)
                 elif "final" not in offering.text and "course info" not in offering.text:
                     # collect information for a section offering
                     section_data = {}
@@ -141,7 +145,7 @@ class Scraper:
                     offering = offering.contents[1] # closing in on actual relevant data
                     days, time, instructor = self.parse_section_offering_data(offering)
                     section_data = self.create_section_bundle(days,time,instructor)
-                    offering_data[offering_id]["sections"][section_id] = section_data
+                    offering_data[str(offering_id)]["sections"][str(section_id)] = section_data
 
             response[course_title] = offering_data
         return response

@@ -3,7 +3,10 @@ from pymongo import MongoClient
 
 client = MongoClient('xxx',1234)
 db = client['xxx']
-db.authenticate('xxx','xxxx')
+db.authenticate('xxx','xxx')
+
+# TODO: re-organize data in the db, dont put it all in one.
+# TODO: Parse data in better form to give to client in get_course_offerings()
 
 # interface for gold data layer to update DB
 
@@ -61,19 +64,31 @@ def add_all_offering_info(course_title ,data, quarter, subject):
 
 # interface for clients
 
-def get_course_offerings(course_title):
-    # returns every course offering for a given course, no section data
-    pass
-def get_all_course_data(course_title):
-    # returns every offering for a given course, includes section data
-    pass
+def get_course_titles(quarter, subject):
+    database = db.course_titles
+    try:
+        return database.find_one({"quarter": quarter})[subject]
+    except (TypeError, KeyError):
+        return []
 
-def get_all_data(quarter, subject):
-    # returns all data (offerings and sections) for every course given a quarter and subject
-    pass
 
-def get_all_courses(quarter, subject):
-    # TODO: Implement this with existing data in DB
-    # returns every course (title only) for a given quarter subject
-    pass
+
+def get_course_offerings(quarter, subject, course_title):
+    # returns every course offering for a given course, including section data
+    course_title = " " + course_title
+    database = db.courses
+    given_quarter = database.find({"quarter": quarter})
+    results = given_quarter.distinct(subject)
+    data = []
+    i = 0
+    while not data and i != len(results):
+        data = results[i].get(course_title)
+        i += 1
+    return data
+
+
+
+
+
+
 

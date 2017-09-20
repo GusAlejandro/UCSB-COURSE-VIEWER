@@ -10,3 +10,5 @@ venv/
 #pycharm
 *.xml
 *.iml
+
+*.DS_Store

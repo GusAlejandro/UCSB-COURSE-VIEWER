@@ -34,7 +34,7 @@ def bulk_update_all_data(quarters, subjects):
 
 #update_course_titles(qts, subj)
 #qts = ["FALL2017","SPRING2017","WINTER2017","FALL2016"]
-qts = ["FALL2017"]
+qts = ["WINTER2017"]
 subj = ['ANTH', 'ART', 'ARTHI','ARTST','ASAM','ASTRO','BIO','BMSE','BLST',
     'CHEMENG','CHEMBIO','CHST' ,'CHIN','CLASS' ,'COMM','COMLIT','CMPSC',
     'CMPTG','CNCSP','DANCE','DYNS','EARTH','EACS','EEMB','ECON','EDU',
@@ -53,8 +53,8 @@ when process is done, redirect all traffic to this new db, delete the old db
 """
 
 #TODO: create full on update script, with redirection of traffic to update db without any downtime
-start = time.time()
-bulk_update_all_data(qts, subj)
-end = time.time()
-print(str(end-start))
-update_all_course_titles(qts,subj)
+# start = time.time()
+# bulk_update_all_data(qts, subj)
+# end = time.time()
+# print(str(end-start))
+#update_all_course_titles(qts,subj)

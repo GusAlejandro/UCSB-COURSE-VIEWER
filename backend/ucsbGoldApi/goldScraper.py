@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import Select
 from bs4 import BeautifulSoup
 import collections
 
+# TODO: Rewrite so that we can access multiple on one instance of browser
 class Scraper:
 
     def __init__(self, quarter, subject):

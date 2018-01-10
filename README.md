@@ -1,4 +1,4 @@
-# UCSB-COURSE-VIEWER
+# [NO LONGER ACTIVE, UCSB RELEASED A MOBILE FRIENDLY GOLD WEBSITE] UCSB-COURSE-VIEWER
 This is the unofficial UCSB course catalog mobile app. Please note this is neither endorsed nor approved by the University of California, Santa Barbara. 
 
 ##### Current Developments 
